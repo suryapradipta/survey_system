@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survey_system/app/modules/login.dart';
 import 'package:survey_system/app/modules/survey/view.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SurveyPage(),
+      home: LoginPage(),
     );
   }
 }

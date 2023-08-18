@@ -110,9 +110,12 @@ class _SurveyPageState extends State<SurveyPage> {
                 // print(dateOfSurvey);
                 // print(productPreferences);
                 // print(buyingBehaviors);
+                /// customer attribute already correct on Postman,
+                /// outlet attribute run correctly
+                /// others not yet test,
                 insertFormToDatabase(SurveyModel(
                     outletName: results[1]['results'][0]['result']['value'],
-                    status: jsonResult['status'],
+                    status: result.finishReason.toString(),
                     startDate: formattedStartDate,
                     endDate: formattedEndDate,
                     customerName: results[2]['results'][0]['result'],
