@@ -39,11 +39,14 @@ class SurveyModel {
         'status': status,
         'start_date': startDate,
         'end_date': endDate,
+
         'outlet_name': outletName,
+
         'customer_name': customerName,
         'customer_age': customerAge,
         'customer_location': customerLocation,
         'survey_date': surveyDate,
+
         'product_answer': productPreferences,
         'behavior_answer': buyingBehaviors,
       };

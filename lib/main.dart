@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:survey_system/app/modules/login.dart';
+import 'package:survey_system/app/modules/chart/pie_chart_sample2.dart';
+import 'package:survey_system/app/modules/login/login.dart';
 import 'package:survey_system/app/modules/survey/view.dart';
 
 void main() {

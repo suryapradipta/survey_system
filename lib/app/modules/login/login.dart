@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       print("login failed");
     }
-
   }
 
   @override

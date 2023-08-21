@@ -16,43 +16,16 @@ class SurveyPage extends StatefulWidget {
 }
 
 class _SurveyPageState extends State<SurveyPage> {
-  late final customerName;
-  late final customerAge;
-  late final customerLocation;
-  late final dateOfSurvey;
-  late final outlets;
-
-  /*Future<void> insertFormToDatabase() async {
-    print(outlets);
-    var url = Uri.parse("http://localhost/survey_system_api/src/post.php");
-
-    var response = await http.post(url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({"outlet_name": outlets}));
-    if (response.statusCode == 201) {
-      print("request succ.");
-    } else {
-      print(response.statusCode);
-      print("request failed.");
-    }
-  }*/
   Future insertFormToDatabase(SurveyModel surveyModel) async {
-    print(outlets);
-    var url = Uri.parse("http://localhost/survey_system_api/src/post.php");
+    var url =
+        Uri.parse("http://localhost/survey_system_api/src/post_survey.php");
 
     var response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(surveyModel.toJson()));
-    if (response.statusCode == 201) {
-      print("request succ.");
-    } else {
-      print(response.statusCode);
-      print("request failed.");
-    }
+    print(response.statusCode);
   }
 
   @override
@@ -70,60 +43,27 @@ class _SurveyPageState extends State<SurveyPage> {
               onResult: (SurveyResult result) {
                 // print(result.finishReason);
                 Navigator.pushNamed(context, '/');
+
                 final jsonResult = result.toJson();
-                // debugPrint(jsonEncode(jsonResult));
-                DateTime startDate = DateTime.parse(jsonResult['startDate']);
-                String formattedStartDate =
-                    DateFormat('yyyy-MM-dd').format(startDate);
-
-                DateTime endDate = DateTime.parse(jsonResult['endDate']);
-                String formattedEndDate =
-                    DateFormat('yyyy-MM-dd').format(endDate);
-
-                final status = jsonResult['status'];
-
                 final results = jsonResult['results'];
-                outlets = results[1]['results'][0]['result']['value'];
 
-                customerName = results[2]['results'][0]['result'];
-                customerAge = results[3]['results'][0]['result'];
-                customerLocation = results[4]['results'][0]['result'];
-                DateTime dateTime =
-                    DateTime.parse(results[5]['results'][0]['result']);
-                String formattedDate =
-                    DateFormat('yyyy-MM-dd').format(dateTime);
-                dateOfSurvey = formattedDate;
-
-                final productPreferences =
-                    results[6]['results'][0]['result']['value'];
-                final buyingBehaviors =
-                    results[7]['results'][0]['result']['value'];
-
-                // print(formattedStartDate);
-                // print(formattedEndDate);
-                // print(status);
-                // print(outlets);
-                // print(customerName);
-                //
-                // print(customerAge);
-                // print(customerLocation);
-                // print(dateOfSurvey);
-                // print(productPreferences);
-                // print(buyingBehaviors);
-                /// customer attribute already correct on Postman,
-                /// outlet attribute run correctly
-                /// others not yet test,
-                insertFormToDatabase(SurveyModel(
+                SurveyModel surveyModel = SurveyModel(
                     outletName: results[1]['results'][0]['result']['value'],
-                    status: result.finishReason.toString(),
-                    startDate: formattedStartDate,
-                    endDate: formattedEndDate,
+                    status: jsonResult['finishReason'],
+                    startDate: DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(jsonResult['startDate'])),
+                    endDate: DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(jsonResult['endDate'])),
                     customerName: results[2]['results'][0]['result'],
                     customerAge: results[3]['results'][0]['result'],
                     customerLocation: results[4]['results'][0]['result'],
-                    surveyDate: formattedDate,
-                    productPreferences: results[6]['results'][0]['result']['value'],
-                    buyingBehaviors: results[7]['results'][0]['result']['value']));
+                    surveyDate: DateFormat('yyyy-MM-dd').format(
+                        DateTime.parse(results[5]['results'][0]['result'])),
+                    productPreferences: results[6]['results'][0]['result']
+                    ['value'],
+                    buyingBehaviors: results[7]['results'][0]['result']
+                    ['value']);
+                insertFormToDatabase(surveyModel);
               },
               task: task,
               showProgress: true,
@@ -231,12 +171,5 @@ class _SurveyPageState extends State<SurveyPage> {
       ],
     );
     return Future.value(task);
-  }
-
-  Future<Task> getJsonTask() async {
-    final taskJson = await rootBundle.loadString('assets/example_json.json');
-    final taskMap = json.decode(taskJson);
-
-    return Task.fromJson(taskMap);
   }
 }
