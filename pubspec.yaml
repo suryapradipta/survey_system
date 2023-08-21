@@ -35,7 +35,6 @@ dependencies:
   survey_kit: ^0.1.2
   http: ^1.1.0
   fl_chart: ^0.63.0
-  charts_flutter: ^0.11.0
 
 dev_dependencies:
   flutter_test:
